@@ -5,15 +5,37 @@ using UnityEngine;
 public class MainController : MonoBehaviour
 { 
     public List<GameObject> notes;
+    public List<GameObject> CirclesInteractuable;
+    private CircleTrigger blueCircle;
+    private CircleTrigger redCircle;
     // Start is called before the first frame update
-    void Start()
+    void GenetareTwoCircles()
     {
-        notes[0].GetComponent<NoteTrigger>().SetTarget("red");
+        int redIndex = Random.Range(0, 4);
+        Debug.Log("red indx: "+ redIndex);
+        redCircle = CirclesInteractuable[redIndex].GetComponent<CircleTrigger>();
+        redCircle.SetTarget("red");
+
+        int blueIndex = Random.Range(4, 8);
+        Debug.Log("blue indx: "+ blueIndex);
+        blueCircle = CirclesInteractuable[blueIndex].GetComponent<CircleTrigger>();
+        blueCircle.SetTarget("blue");
+        
     }
 
+    void Start()
+    {
+        //notes[0].GetComponent<NoteTrigger>().SetTarget("red");
+        GenetareTwoCircles();
+    }
+
+    
     // Update is called once per frame
     void Update()
     {
-        
+        if (!redCircle.isActivated() && !blueCircle.isActivated())
+        {
+            GenetareTwoCircles();
+        }
     }
 }

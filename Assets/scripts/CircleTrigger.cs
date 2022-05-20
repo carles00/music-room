@@ -1,56 +1,60 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NoteTrigger : MonoBehaviour
+public class CircleTrigger : MonoBehaviour
 {
-    private AudioSource audioSource;
-    private Material material;
+    private ParticleSystem particle;
     private bool hasBlueTarget = false;
     private bool hasRedTarget = false;
-    // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        material = GetComponent<Renderer>().material;
-        
+        particle = GetComponent<ParticleSystem>();
+        particle.Stop();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
 
+    }
+    private void ActivateParticle()
+    {
+        particle.Play();
+        ParticleSystem.EmissionModule em = particle.emission;
+        em.enabled = true;
+    }
     public void SetTarget(string player)
     {
         if (player.Equals("red"))
         {
             Debug.Log("set red target");
-            material.color = Color.red;
+            ActivateParticle();
             hasRedTarget = true;
         }
         else if (player.Equals("blue"))
         {
-            material.color = Color.blue;
+            ActivateParticle();
             hasBlueTarget = true;
         }
-        
+
     }
-    
+    public bool isActivated()
+    {
+        return hasBlueTarget || hasRedTarget;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player1") && hasRedTarget)
-        { 
-            audioSource.Play(0);
+        {
+            Debug.Log("red player enter");
             hasRedTarget = false;
-            material.color = Color.white;
+            particle.Stop();
         }
         if (other.CompareTag("Player2") && hasBlueTarget)
         {
-            audioSource.Play(0);
-            hasRedTarget = false;
-            material.color = Color.white;
+            hasBlueTarget = false;
+            particle.Stop();
         }
     }
 
