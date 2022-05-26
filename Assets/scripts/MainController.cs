@@ -25,7 +25,7 @@ public class MainController : MonoBehaviour
 
     void Start()
     {
-        //notes[0].GetComponent<NoteTrigger>().SetTarget("red");
+        notes[0].GetComponent<NoteTrigger>().SetTarget("red");
         GenetareTwoCircles();
     }
 
