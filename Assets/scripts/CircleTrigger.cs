@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class CircleTrigger : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     private ParticleSystem particle;
     private bool hasBlueTarget = false;
     private bool hasRedTarget = false;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         particle = GetComponent<ParticleSystem>();
         particle.Stop();
     }
@@ -48,11 +53,13 @@ public class CircleTrigger : MonoBehaviour
         if (other.CompareTag("Player1") && hasRedTarget)
         {
             Debug.Log("red player enter");
+            audioSource.Play(0);
             hasRedTarget = false;
             particle.Stop();
         }
         if (other.CompareTag("Player2") && hasBlueTarget)
         {
+            audioSource.Play(0);
             hasBlueTarget = false;
             particle.Stop();
         }
