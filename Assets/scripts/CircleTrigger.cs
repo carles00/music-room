@@ -18,10 +18,7 @@ public class CircleTrigger : MonoBehaviour
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-
-        particle = GetComponent<ParticleSystem>();
-        particle.Stop();
+        
     }
 
     // Update is called once per frame
@@ -88,12 +85,10 @@ public class CircleTrigger : MonoBehaviour
             particle.Stop();
         }
         if(other.CompareTag("Player1") && hasPurpleTarget){
-            Debug.Log("red player enter purple target");
             player1forPurple = true;
             
         }
         if(other.CompareTag("Player2") && hasPurpleTarget){
-            Debug.Log("blue player enter purple target");
             player2forPurple = true;
         }
         if(player1forPurple && player2forPurple){
@@ -107,11 +102,9 @@ public class CircleTrigger : MonoBehaviour
     }
     private void OnTriggerExit(Collider other){
         if(other.CompareTag("Player1") && hasPurpleTarget){
-            Debug.Log("red player leave purple target");
             player1forPurple = false;
         }
         if(other.CompareTag("Player2") && hasPurpleTarget){
-            Debug.Log("blue player leave purple target");
             player2forPurple = false;
         }
     }
