@@ -20,6 +20,10 @@ public class MainController : MonoBehaviour
         Debug.Log("blue indx: "+ blueIndex);
         blueCircle = CirclesInteractuable[blueIndex].GetComponent<CircleTrigger>();
         blueCircle.SetTarget("blue");
+        int purpleIndex = Random.Range(8, 12);
+        Debug.Log("purple indx: "+ purpleIndex);
+        blueCircle = CirclesInteractuable[purpleIndex].GetComponent<CircleTrigger>();
+        blueCircle.SetTarget("purple");
         
     }
 

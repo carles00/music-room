@@ -10,6 +10,10 @@ public class CircleTrigger : MonoBehaviour
     private bool hasBlueTarget = false;
     private bool hasRedTarget = false;
 
+    private bool hasPurpleTarget = false;
+    private bool player1forPurple = false;
+    private bool player2forPurple = false;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -21,7 +25,14 @@ public class CircleTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(audioSource == null){
+            audioSource = GetComponent<AudioSource>();
+        }
+        if (particle == null)
+        {
+            particle = GetComponent<ParticleSystem>();
+            particle.Stop();
+        }
     }
     private void ActivateParticle()
     {
@@ -33,7 +44,6 @@ public class CircleTrigger : MonoBehaviour
     {
         if (player.Equals("red"))
         {
-            Debug.Log("set red target");
             ActivateParticle();
             hasRedTarget = true;
         }
@@ -42,25 +52,45 @@ public class CircleTrigger : MonoBehaviour
             ActivateParticle();
             hasBlueTarget = true;
         }
+        else if (player.Equals("purple"))
+        {
+            ActivateParticle();
+            hasPurpleTarget = true;
+        }
 
     }
     public bool isActivated()
     {
-        return hasBlueTarget || hasRedTarget;
+        return hasBlueTarget || hasRedTarget || hasPurpleTarget;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player1") && hasRedTarget)
         {
-            Debug.Log("red player enter");
+            Debug.Log("red player enter red target");
             audioSource.Play(0);
             hasRedTarget = false;
             particle.Stop();
         }
         if (other.CompareTag("Player2") && hasBlueTarget)
         {
+            Debug.Log("blue player enter blue target");
             audioSource.Play(0);
             hasBlueTarget = false;
+            particle.Stop();
+        }
+        if(other.CompareTag("Player1") && hasPurpleTarget){
+            Debug.Log("red player enter purple target");
+            player1forPurple = true;
+            
+        }
+        if(other.CompareTag("Player2") && hasPurpleTarget){
+            Debug.Log("blue player enter purple target");
+            player2forPurple = true;
+        }
+        if(player1forPurple && player2forPurple){
+            audioSource.Play(0);
+            hasPurpleTarget = false;
             particle.Stop();
         }
     }
