@@ -8,8 +8,9 @@ public class MainController : MonoBehaviour
     public List<GameObject> CirclesInteractuable;
     private CircleTrigger blueCircle;
     private CircleTrigger redCircle;
+    private CircleTrigger purpleCircle;
     // Start is called before the first frame update
-    void GenetareTwoCircles()
+    void GenetareThreeCircles()
     {
         int redIndex = Random.Range(0, 4);
         Debug.Log("red indx: "+ redIndex);
@@ -20,26 +21,25 @@ public class MainController : MonoBehaviour
         Debug.Log("blue indx: "+ blueIndex);
         blueCircle = CirclesInteractuable[blueIndex].GetComponent<CircleTrigger>();
         blueCircle.SetTarget("blue");
+        
         int purpleIndex = Random.Range(8, 12);
         Debug.Log("purple indx: "+ purpleIndex);
-        blueCircle = CirclesInteractuable[purpleIndex].GetComponent<CircleTrigger>();
-        blueCircle.SetTarget("purple");
-        
+        purpleCircle = CirclesInteractuable[purpleIndex].GetComponent<CircleTrigger>();
+        purpleCircle.SetTarget("purple");
     }
 
     void Start()
     {
-        notes[0].GetComponent<NoteTrigger>().SetTarget("red");
-        GenetareTwoCircles();
+        GenetareThreeCircles();
     }
 
     
     // Update is called once per frame
     void Update()
     {
-        if (!redCircle.isActivated() && !blueCircle.isActivated())
+        if (!redCircle.isActivated() && !blueCircle.isActivated() && !purpleCircle.isActivated())
         {
-            GenetareTwoCircles();
+            GenetareThreeCircles();
         }
     }
 }

@@ -14,6 +14,8 @@ public class CircleTrigger : MonoBehaviour
     private bool player1forPurple = false;
     private bool player2forPurple = false;
 
+    private bool ableToPlay = false;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -36,9 +38,11 @@ public class CircleTrigger : MonoBehaviour
     }
     private void ActivateParticle()
     {
+        
         particle.Play();
         ParticleSystem.EmissionModule em = particle.emission;
         em.enabled = true;
+        ableToPlay = true;
     }
     public void SetTarget(string player)
     {
@@ -67,15 +71,19 @@ public class CircleTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player1") && hasRedTarget)
         {
-            Debug.Log("red player enter red target");
-            audioSource.Play(0);
+            if(ableToPlay){
+                audioSource.Play(0);
+                ableToPlay=false;
+            }
             hasRedTarget = false;
             particle.Stop();
         }
         if (other.CompareTag("Player2") && hasBlueTarget)
         {
-            Debug.Log("blue player enter blue target");
-            audioSource.Play(0);
+            if(ableToPlay){
+                audioSource.Play(0);
+                ableToPlay=false;
+            }
             hasBlueTarget = false;
             particle.Stop();
         }
@@ -89,10 +97,23 @@ public class CircleTrigger : MonoBehaviour
             player2forPurple = true;
         }
         if(player1forPurple && player2forPurple){
-            audioSource.Play(0);
+            if(ableToPlay){
+                audioSource.Play(0);
+                ableToPlay=false;
+            }
             hasPurpleTarget = false;
             particle.Stop();
         }
     }
-
+    private void OnTriggerExit(Collider other){
+        if(other.CompareTag("Player1") && hasPurpleTarget){
+            Debug.Log("red player leave purple target");
+            player1forPurple = false;
+        }
+        if(other.CompareTag("Player2") && hasPurpleTarget){
+            Debug.Log("blue player leave purple target");
+            player2forPurple = false;
+        }
+    }
 }
+

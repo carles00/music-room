@@ -19,7 +19,12 @@ public class NoteTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(audioSource == null){
+            audioSource = GetComponent<AudioSource>();
+        }
+        if(material == null){
+            material = GetComponent<Renderer>().material;
+        }
     }
 
     public void SetTarget(string player)
