@@ -98,6 +98,9 @@ public class CircleTrigger : MonoBehaviour
                 ableToPlay=false;
             }
             hasPurpleTarget = false;
+            player1forPurple = false;
+            player2forPurple = false;
+
             particle.Stop();
         }
     }
