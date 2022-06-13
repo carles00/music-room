@@ -35,6 +35,7 @@ public class CircleTrigger : MonoBehaviour
     }
     private void ActivateParticle()
     {
+        Update();
         
         particle.Play();
         ParticleSystem.EmissionModule em = particle.emission;

@@ -7,49 +7,95 @@ public class MainController : MonoBehaviour
     public List<GameObject> CirclesInteractuable;
 
     public GameObject startTrigger;
+    public GameObject Progress;
     private CircleTrigger startCircle;
     private CircleTrigger blueCircle;
     private CircleTrigger redCircle;
     private CircleTrigger purpleCircle;
+    private ProgressBar progressBar;
+    private AudioSource finalSong;
+    private Queue soundQueue;
+    private int currentIndex;
 
+    private bool gameFinished;
+    private bool ended;
     public bool gameStarting = true;
+
     // Start is called before the first frame update
+
     void GenetareThreeCircles()
     {
-        int redIndex = Random.Range(0, 4);
-        redCircle = CirclesInteractuable[redIndex].GetComponent<CircleTrigger>();
+        
+        redCircle = CirclesInteractuable[currentIndex].GetComponent<CircleTrigger>();
         redCircle.SetTarget("red");
 
-        int blueIndex = Random.Range(4, 8);
-        blueCircle = CirclesInteractuable[blueIndex].GetComponent<CircleTrigger>();
+    
+        blueCircle = CirclesInteractuable[currentIndex+1].GetComponent<CircleTrigger>();
         blueCircle.SetTarget("blue");
 
-        int purpleIndex = Random.Range(8, 12);
-        purpleCircle = CirclesInteractuable[purpleIndex].GetComponent<CircleTrigger>();
+
+        purpleCircle = CirclesInteractuable[currentIndex+2].GetComponent<CircleTrigger>();
         purpleCircle.SetTarget("purple");
     }
 
     void Start()
     {
-        
+        gameFinished = false;
+        currentIndex = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(finalSong == null){
+            finalSong = GetComponent<AudioSource>();
+
+        }
+
+        if(progressBar == null){
+            progressBar = Progress.GetComponent<ProgressBar>();
+            progressBar.current = 0;
+            Progress.SetActive(false);
+        }
+
         if(startCircle == null){
             startCircle = startTrigger.GetComponent<CircleTrigger>();
             startCircle.SetTarget("purple");
         }
 
-        if(!startCircle.isActivated()){
+        if(gameFinished){
+            if(!ended){
+                Progress.SetActive(false);
+                finalSong.Play(0);
+                ended = true;
+            }
+        }else{
             if(gameStarting){
-                GenetareThreeCircles();
-                gameStarting = false;
+                if(!startCircle.isActivated()){
+                    Progress.SetActive(true);
+                    GenetareThreeCircles();
+                    gameStarting = false;
+                }
+            }else{
+                if(allCirclesCollected()){
+                    progressBar.addProgress(25);
+                    
+                    if(progressBar.getProgress() >= 100){
+                        gameFinished = true;
+                    }else{
+                        currentIndex +=3;
+                        GenetareThreeCircles();
+                    }
+                }
             }
-            if (!redCircle.isActivated() && !blueCircle.isActivated() && !purpleCircle.isActivated()){
-                GenetareThreeCircles();
-            }
-        }
+        } 
+        
+        
     }     
+
+    private bool allCirclesCollected(){
+        return(!redCircle.isActivated() && !blueCircle.isActivated() && !purpleCircle.isActivated());
+    }
+
+
 }
